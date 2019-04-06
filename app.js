@@ -98,7 +98,7 @@ function upload_random_image(images, mc) {
 
 // Every 10 minutes, kick off a meme creation
 var memeCount = 0;
-var minutes = 0.25;
+var minutes = 5;
 setInterval(function () {
   var files = fs.readdirSync('./images');
   var images = [];
@@ -108,7 +108,7 @@ setInterval(function () {
   upload_random_image(images, memeCount);
   memeCount++;
   console.log(files);
-}, 5 * 1000)
+}, 60 * minutes * 1000)
 
 module.exports = app;
 
