@@ -56,6 +56,7 @@ function toDataURL(url, callback) {
 
 
 function giveMemePls(req, res, next) {
+  console.log(req.body);
   console.log("Downloading image: "+req.body.image);
   dl(req.body.image, "images", "image/gif");
   db.none('insert into memes (image)' +
