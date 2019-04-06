@@ -1,5 +1,4 @@
 var promise = require('bluebird');
-var cv = require('opencv');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var FileReader = require("filereader");
 var dl = require("download");
@@ -57,10 +56,6 @@ function toDataURL(url, callback) {
 
 function giveMemePls(req, res, next) {
   dl(req.body.image, "images", "image/jpg");
-  cv.readImage(req.body.image, function (err, im) {
-    // console.log(req);
-    console.log(im);
-  });
   db.none('insert into memes (image)' +
       'values(${image})',
     req.body)
