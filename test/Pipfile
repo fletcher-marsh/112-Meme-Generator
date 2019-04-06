@@ -5,15 +5,14 @@ verify_ssl = true
 name = "pypi"
 
 
-[packages]
-
-
-
 [dev-packages]
 
-pytest = "*"
+
+
+[packages]
+
 django = "*"
 dj-database-url = "*"
 whitenoise = "*"
 gunicorn = "*"
-twine = "*"
+"psycopg2" = "*"
