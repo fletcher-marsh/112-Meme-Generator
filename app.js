@@ -96,18 +96,18 @@ function upload_random_image(images, mc) {
 }
 
 // Every 10 minutes, kick off a meme creation
-var memeCount = 0;
-var minutes = 10;
-setInterval(function () {
-  var files = fs.readdirSync('./images');
-  var images = [];
-  files.forEach(function (f) {
-    images.push(f);
-  });
-  upload_random_image(images, memeCount);
-  memeCount++;
-  console.log(files);
-}, 60 * minutes * 1000)
+// var memeCount = 0;
+// var minutes = 10;
+// setInterval(function () {
+//   var files = fs.readdirSync('./images');
+//   var images = [];
+//   files.forEach(function (f) {
+//     images.push(f);
+//   });
+//   upload_random_image(images, memeCount);
+//   memeCount++;
+//   console.log(files);
+// }, 60 * minutes * 1000)
 
 module.exports = app;
 
