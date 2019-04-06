@@ -1,5 +1,1 @@
-Django service for meme creation.
-
-
-
-Bro.
+# 112 Meme Generator Backend API
