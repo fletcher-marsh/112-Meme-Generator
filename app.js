@@ -9,7 +9,6 @@ var TwitterBot = require('twit');
 // Set up auth tokens and such
 const dotenv = require('dotenv');
 dotenv.config();
-console.log(`Your port is ${process.env.ACCESS_TOKEN}`)
 
 var indexRouter = require('./routes/index');
 
