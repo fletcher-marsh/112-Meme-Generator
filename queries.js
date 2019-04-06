@@ -1,7 +1,9 @@
 var promise = require('bluebird');
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-var FileReader = require("filereader");
-var dl = require("download");
+const aws = require('aws-sdk');
+aws.config.region = 'us-east-1';
+
+var XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+var FileReader = require('filereader');
 
 var options = {
   // Initialization Options
@@ -20,7 +22,7 @@ var db = pgp(connectionString);
 
 
 // -------------------------------------------------------
-// Get meme
+// Get random meme
 // -------------------------------------------------------
 
 function getMemePls(req, res, next) {
@@ -37,29 +39,51 @@ function getMemePls(req, res, next) {
     });
 }
 
+// -------------------------------------------------------
+// Post meme
+// -------------------------------------------------------
+
 function toDataURL(url, callback) {
   var xhr = new XMLHttpRequest();
-  xhr.open('get', url);
-  xhr.responseType = 'blob';
+  xhr.open('get', url, true);
+  xhr.responseType = 'arraybuffer';
   xhr.onload = function () {
-    var fr = new FileReader();
+    console.log(this.response);
+    // var fr = new FileReader();
 
-    fr.onload = function () {
-      callback(this.result);
-    };
-    console.log(xhr);
-    fr.readAsDataURL(xhr.responseText); // async call
+    // fr.onload = function () {
+    //   console.log(this.response);
+    //   callback(this.response);
+    // };
+    // fr.readAsDataURL(xhr.response); // async call
   };
 
   xhr.send();
 }
 
 
+var imgCount = 0;
+function sendToS3(img) {
+  const s3 = new aws.S3();
+  const fileName = "img" + String(imgCount) + ".gif";
+  // const fileType = "image/gif";
+  const s3Params = {
+    Bucket: process.env.S3_BUCKET,
+    Body: img,  
+    Key: fileName
+  };
+
+  s3.putObject(s3Params, function(err, data) {
+    if (err) console.log(err, err.stack);
+    else console.log(data);
+  });
+}
+
 function giveMemePls(req, res, next) {
-  console.log(req);
-  console.log(req.body);
-  console.log("Downloading image: "+req.body.image);
-  dl(req.body.image, "images", "image/gif");
+  toDataURL(req.body.image, function (res) {
+    console.log(res);
+    sendToS3(req);
+  });
   db.none('insert into memes (image)' +
       'values(${image})',
     req.body)
